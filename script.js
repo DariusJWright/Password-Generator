@@ -17,37 +17,54 @@ var special = '!"#$%&()*+,-./:;<>=?@[]\^_`{}|~';
   var specialArray = special.split[""];
 
 var getPasswordLength = function() {
-  var length = "";
+  var pwLength = "";
 
-  while (length === "" || name === null) {
-      length = prompt("How long would you like your password to be? Enter a NUMBER between 8 and 128.");
+  while (pwLength === "" || name === null) {
+      pwLength = prompt("How long would you like your password to be? Enter a NUMBER between 8 and 128.");
   }
 
-  if (length < 8 || length > 128) {
+  if (pwLength < 8 || pwLength > 128) {
     alert("Please select a number between 8 and 128. Click ok to try again");
     return getPasswordLength();
   }
 
   console.log("Your password length is " + length);
-  return length;
+  return pwLength;
 }
 
-var passwordInfo = {
-  length: getPasswordLength(),
-  lowercase: window.confirm("Would you like to include LOWER CASE LETTERS?"),
-  uppercase: window.confirm("Would you like to include UPPERCASE LETTERS?"),
-  numeric: window.confirm("Would you like to include NUMERIC CHARACTERS?"),
-  special: window.confirm("Would you like to include SPECIAL CHARACTERS?")
-}
+var length = getPasswordLength();
+var lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
+var uppercase = window.confirm("Would you like to include UPPERCASE LETTERS?");
+var numeric = window.confirm("Would you like to include NUMERIC CHARACTERS?");
+var special = window.confirm("Would you like to include SPECIAL CHARACTERS?");
 
-function generatePassword() {
-  var password = "";
-  var characters = [lowercaseArray, uppercaseArray, numbersArray, specialArray];
-  
-  for(var i = 0 ; i < passwordInfo.length; i++) {
-    password = (Math.floor(Math.random() * characters.length));
+//var passwordInfo = function() {
+while (!lowercase && !uppercase && !numeric && !special) {  
+  alert("You must select at least ONE option.");
+  lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
+  uppercase = window.confirm("Would you like to include UPPERCASE LETTERS?");
+  numeric = window.confirm("Would you like to include NUMERIC CHARACTERS?");
+  special = window.confirm("Would you like to include SPECIAL CHARACTERS?");
+
+  if (lowercase || uppercase || numeric || special) {
+    break;
   }
-  return password;
+}
+
+alert("Click 'Generate Password' to get your new password");
+
+var generatePassword = function() {
+  var passwordLength = parseInt(length);
+  var randomPassword = "";
+  var characters = [lowercaseArray, uppercaseArray, numbersArray, specialArray];
+  console.log(passwordLength);
+  for(var i = 0 ; i < passwordLength ; i++) {
+    var random = password [Math.floor(Math.random() * characters.length)];
+    randomPassword += random;
+  }
+  console.log(characters);
+  return randomPassword;
+}
 
 
 // Get references to the #generate element
