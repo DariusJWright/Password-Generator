@@ -4,6 +4,8 @@
 //validate input with conditional. at least one char type selected
 //produce random pw that matches selected criteria
 //display pw
+
+//arrays for pw criteria
 var lowercase = "abcdefghijklmnopqrstuvwxyz";
   var lowercaseArray = lowercase.split[""];
 
@@ -16,11 +18,14 @@ var numbers = "1234567890";
 var special = '!"#$%&()*+,-./:;<>=?@[]\^_`{}|~';
   var specialArray = special.split[""];
 
+//function to get the number of characters
 var getPasswordLength = function() {
-  var pwLength = "";
+  var pwLength = prompt("How long would you like your password to be? Enter a NUMBER between 8 and 128.");
+  pwLength = parseInt(pwLength);
 
-  while (pwLength === "" || name === null) {
+  while (!pwLength) {
       pwLength = prompt("How long would you like your password to be? Enter a NUMBER between 8 and 128.");
+      pwLength = parseInt(pwLength);
   }
 
   if (pwLength < 8 || pwLength > 128) {
@@ -28,17 +33,18 @@ var getPasswordLength = function() {
     return getPasswordLength();
   }
 
-  console.log("Your password length is " + length);
+  console.log("Your password length is " + pwLength);
   return pwLength;
 }
 
+//assign user input to variables
 var length = getPasswordLength();
 var lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
 var uppercase = window.confirm("Would you like to include UPPERCASE LETTERS?");
 var numeric = window.confirm("Would you like to include NUMERIC CHARACTERS?");
 var special = window.confirm("Would you like to include SPECIAL CHARACTERS?");
 
-//var passwordInfo = function() {
+//ensure the user has selected at least one of the options for criteria
 while (!lowercase && !uppercase && !numeric && !special) {  
   alert("You must select at least ONE option.");
   lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
@@ -51,13 +57,18 @@ while (!lowercase && !uppercase && !numeric && !special) {
   }
 }
 
+//bit of instruction for the user
 alert("Click 'Generate Password' to get your new password");
 
+//function to create the random password
 var generatePassword = function() {
   var passwordLength = parseInt(length);
   var randomPassword = "";
   var characters = [lowercaseArray, uppercaseArray, numbersArray, specialArray];
+  
   console.log(passwordLength);
+  console.log(typeof(passwordLength));
+
   for(var i = 0 ; i < passwordLength ; i++) {
     var random = password [Math.floor(Math.random() * characters.length)];
     randomPassword += random;
