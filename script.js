@@ -1,34 +1,29 @@
-//prompts to ask for pw criteria to include, special chars, numbers, cases
-//add selected criteria to pw
-//min length: 8 char, max: 128
-//validate input with conditional. at least one char type selected
-//produce random pw that matches selected criteria
-//display pw
+var getLowercase = function () {
+  var lower = "abcdefghijklmnopqrstuvwxyz";
+  return lower[Math.floor(Math.random() * lower.length)];
+}
 
-//arrays for pw criteria
-var lowercase = "abcdefghijklmnopqrstuvwxyz";
-  var lowercaseArray = lowercase.split[""];
+var getUppercase = function () {
+  var upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return upper[Math.floor(Math.random() * upper.length)];
+}  
 
-var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var uppercaseArray = uppercase.split[""];
+var getNumeric = function () {
+  var num = "1234567890";
+  return num[Math.floor(Math.random() * num.length)];
+}
 
-var numbers = "1234567890";
-  var numbersArray = numbers.split[""];
-  
-var special = '!"#$%&()*+,-./:;<>=?@[]\^_`{}|~';
-  var specialArray = special.split[""];
+var getSpecial = function () {
+  var spec = '!"#$%&()*+,-./:;<>=?@[]\^_`{}|~';
+  return spec[Math.floor(Math.random() * spec.length)];
+}
 
 //function to get the number of characters
 var getPasswordLength = function() {
   var pwLength = prompt("How long would you like your password to be? Enter a NUMBER between 8 and 128.");
   pwLength = parseInt(pwLength);
 
-  while (!pwLength) {
-      pwLength = prompt("How long would you like your password to be? Enter a NUMBER between 8 and 128.");
-      pwLength = parseInt(pwLength);
-  }
-
-  if (pwLength < 8 || pwLength > 128) {
+  if (pwLength < 8 || pwLength > 128 || !pwLength) {
     alert("Please select a number between 8 and 128. Click ok to try again");
     return getPasswordLength();
   }
@@ -37,14 +32,14 @@ var getPasswordLength = function() {
   return pwLength;
 }
 
-//assign user input to variables
+//assign user input criteria to variables
 var length = getPasswordLength();
 var lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
 var uppercase = window.confirm("Would you like to include UPPERCASE LETTERS?");
 var numeric = window.confirm("Would you like to include NUMERIC CHARACTERS?");
 var special = window.confirm("Would you like to include SPECIAL CHARACTERS?");
 
-//ensure the user has selected at least one of the options for criteria
+//ensure the user has selected at least one of the criteria options 
 while (!lowercase && !uppercase && !numeric && !special) {  
   alert("You must select at least ONE option.");
   lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
@@ -57,24 +52,26 @@ while (!lowercase && !uppercase && !numeric && !special) {
   }
 }
 
+lowercase = getLowercase();
+uppercase = getUppercase();
+numeric = getNumeric();
+special =  getSpecial();
+
+
+var pass = [];
 //bit of instruction for the user
 alert("Click 'Generate Password' to get your new password");
-
 //function to create the random password
-var generatePassword = function() {
-  var passwordLength = parseInt(length);
-  var randomPassword = "";
-  var characters = [lowercaseArray, uppercaseArray, numbersArray, specialArray];
-  
-  console.log(passwordLength);
-  console.log(typeof(passwordLength));
-
-  for(var i = 0 ; i < passwordLength ; i++) {
-    var random = password [Math.floor(Math.random() * characters.length)];
-    randomPassword += random;
+var generatePassword = function(length, lowercase, uppercase, numeric, special) {
+  var passLength = length;
+  var charactersArray = [{lowercase}, {uppercase}, {numeric}, {special}].filter(pick => Object.values(pick)[0]);
+  var characters = lowercase + uppercase + numeric + special;
+  for(var i = 0 ; i < passLength.length ; i++) {
+    var ranPass = characters[Math.floor(Math.random() * charactersArray.length)];
+    pass += characters(ranPass);
   }
-  console.log(characters);
-  return randomPassword;
+  console.log(pass);
+  return pass;
 }
 
 
@@ -92,3 +89,6 @@ function writePassword() {
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
+for(var i = 0 ; i < length.length ; i++) {
+  var ranPass = Math.floor(Math.random() * characters.length);
+}
