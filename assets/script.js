@@ -1,94 +1,77 @@
-var getLowercase = function () {
-  var lower = "abcdefghijklmnopqrstuvwxyz";
-  return lower[Math.floor(Math.random() * lower.length)];
-}
+// get elements
+let generateBtn = document.querySelector("#generate");
+let passwordText = document.querySelector("#password");
 
-var getUppercase = function () {
-  var upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return upper[Math.floor(Math.random() * upper.length)];
-}  
-
-var getNumeric = function () {
-  var num = "1234567890";
-  return num[Math.floor(Math.random() * num.length)];
-}
-
-var getSpecial = function () {
-  var spec = '!"#$%&()*+,-./:;<>=?@[]\^_`{}|~';
-  return spec[Math.floor(Math.random() * spec.length)];
-}
+const lowerChars = "abcdefghijklmnopqrstuvwxyz".split('');
+const upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+const numChars = "1234567890".split('');
+const specChars = '!"#$%&()*+,-./:;<>=?@[]\^_`{}|~'.split('');
 
 //function to get the number of characters
-var getPasswordLength = function() {
-  var pwLength = prompt("How long would you like your password to be? Enter a NUMBER between 8 and 128.");
-  pwLength = parseInt(pwLength);
+const getPasswordLength = () => {
+  const pwLength = prompt("How long would you like your password to be? Enter a NUMBER between 8 and 128.");
 
   if (pwLength < 8 || pwLength > 128 || !pwLength) {
     alert("Please select a number between 8 and 128. Click ok to try again");
     return getPasswordLength();
   }
 
-  console.log("Your password length is " + pwLength);
-  return pwLength;
+  choseChars(pwLength);
 }
 
-//assign user input criteria to variables
-var length = getPasswordLength();
-var lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
-var uppercase = window.confirm("Would you like to include UPPERCASE LETTERS?");
-var numeric = window.confirm("Would you like to include NUMERIC CHARACTERS?");
-var special = window.confirm("Would you like to include SPECIAL CHARACTERS?");
-
-//ensure the user has selected at least one of the criteria options 
-while (!lowercase && !uppercase && !numeric && !special) {  
-  alert("You must select at least ONE option.");
-  lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
-  uppercase = window.confirm("Would you like to include UPPERCASE LETTERS?");
-  numeric = window.confirm("Would you like to include NUMERIC CHARACTERS?");
-  special = window.confirm("Would you like to include SPECIAL CHARACTERS?");
-
-  if (lowercase || uppercase || numeric || special) {
-    break;
+const choseChars = (pwLength) => {
+  const lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
+  const uppercase = window.confirm("Would you like to include UPPERCASE LETTERS?");
+  const numeric = window.confirm("Would you like to include NUMERIC CHARACTERS?");
+  const special = window.confirm("Would you like to include SPECIAL CHARACTERS?");
+  
+  //ensure the user has selected at least one of the criteria options 
+  while (!lowercase && !uppercase && !numeric && !special) {  
+    alert("You must select at least ONE option.");
+    lowercase = window.confirm("Would you like to include LOWER CASE LETTERS?");
+    uppercase = window.confirm("Would you like to include UPPERCASE LETTERS?");
+    numeric = window.confirm("Would you like to include NUMERIC CHARACTERS?");
+    special = window.confirm("Would you like to include SPECIAL CHARACTERS?");
+  
+    if (lowercase || uppercase || numeric || special) {
+      break;
+    }
   }
-}
 
-lowercase = getLowercase();
-uppercase = getUppercase();
-numeric = getNumeric();
-special =  getSpecial();
-
-
-var pass = [];
-//bit of instruction for the user
-alert("Click 'Generate Password' to get your new password");
-//function to create the random password
-var generatePassword = function(length, lowercase, uppercase, numeric, special) {
-  var passLength = length;
-  var charactersArray = [{lowercase}, {uppercase}, {numeric}, {special}].filter(pick => Object.values(pick)[0]);
-  var characters = lowercase + uppercase + numeric + special;
-  for(var i = 0 ; i < passLength.length ; i++) {
-    var ranPass = characters[Math.floor(Math.random() * charactersArray.length)];
-    pass += characters(ranPass);
+  const criteria = {
+    length: pwLength,
+    lowercase: lowercase,
+    uppercase: uppercase,
+    numeric: numeric,
+    special: special
   }
-  console.log(pass);
-  return pass;
+
+  writePassword(criteria);
 }
 
+const writePassword = (criteria) => {
+  let passwordArr = [];
+  while (passwordArr.length < criteria.length) {
+    if (criteria.lowercase) {
+      passwordArr.push(lowerChars[generateRandom(lowerChars)]);
+    }
+    if (criteria.uppercase) {
+      passwordArr.push(upperChars[generateRandom(upperChars)]);
+    }
+    if (criteria.numeric) {
+      passwordArr.push(numChars[generateRandom(numChars)]);
+    }
+    if (criteria.special) {
+      passwordArr.push(specChars[generateRandom(specChars)]);
+    }
+  }
+  // Write password to the #password input
+  passwordText.value = passwordArr.join('');
+}
 
-// Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
-
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-
+const generateRandom = (chars) => {
+  return Math.floor(Math.random() * chars.length);
 }
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
-for(var i = 0 ; i < length.length ; i++) {
-  var ranPass = Math.floor(Math.random() * characters.length);
-}
+generateBtn.addEventListener("click", getPasswordLength);
